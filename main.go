@@ -25,8 +25,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
     }
     fmt.Printf("Request:\n%s\n", requestDump)
 
-w
-
     // Build a string containing all the headers
     var headerString strings.Builder
     for key, values := range r.Header {

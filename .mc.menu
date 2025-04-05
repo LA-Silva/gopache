@@ -29,8 +29,7 @@ m	make
         echo "Make Error"
 	echo Give line number:
 	read gotoline
-	echo goto line $gotoline
-	read key
+	mcedit main.go:$gotoline
     else
 	echo "OK"
     fi
