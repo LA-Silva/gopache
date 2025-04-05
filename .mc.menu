@@ -1,0 +1,62 @@
+shell_patterns=0
+
+##############################################################################
+#   %%  The % character
+#   %f  The current file (if non-local vfs, file will be copied locally and
+#                         %f will be full path to it)
+#   %p  The current file
+#   %d  The current working directory
+#   %s  "Selected files"; the tagged files if any, otherwise the current file
+#   %t  Tagged files
+#   %u  Tagged files (and they are untagged on return from expand_format)
+#   %view Runs the commands and pipes standard output to the view command
+#   If %view is immediately followed by '{', recognize keywords
+#   ascii, hex, nroff and unform
+#
+#   If the format letter is in uppercase, it refers to the other panel
+#
+#   With a number followed the % character you can turn quoting on (default)
+#   and off. For example:
+#   %f    quote expanded macro
+#   %1f   ditto
+#   %0f   don't quote expanded macro
+##############################################################################
+
+m	make
+    make
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "Make Error"
+	echo Give line number:
+	read gotoline
+	echo goto line $gotoline
+	read key
+    else
+	echo "OK"
+    fi
+    read "press enter" key
+
++ ! t t
+@       Do something on the current file
+        CMD=%{Enter command}
+        $CMD %f
+
++ t t
+@       Do something on the tagged files
+        CMD=%{Enter command}
+        for i in %t ; do
+            $CMD "$i"
+        done
+
+B	build static
+	export CGO_ENABLED=0
+	go build -o gopache -a -installsuffix cgo -ldflags '-w -extldflags "-static"' main.go
+	sleep 15
+
+P	to github
+    rm gopache
+    git add .
+    git commit
+    git push
+
+    
