@@ -1,0 +1,2 @@
+#!/bin/sh
+gopache $1 || ./gopache $1

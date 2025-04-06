@@ -26,14 +26,57 @@ m	make
     make
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        echo "Make Error"
-	echo Give line number:
-	read gotoline
-	mcedit main.go:$gotoline
+        echo "Syntax Errors found."
     else
-	echo "OK"
+		echo "OK"
     fi
-    read "press enter" key
+	echo "Press Enter"
+    read key
+
+v	view nohup
+	tail -f nohup.out
+
+s	stop server
+	kill `cat gopache.pid`
+	
+r	build and run
+    make
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "Syntax Errors found."
+    else
+		echo "OK"
+		./gopache ctl start
+		echo "Program stopped."
+    fi
+	echo "Press Enter"
+    read key
+	
+b	build static
+	export CGO_ENABLED=0
+	go build -o gopache -a -installsuffix cgo -ldflags '-w -extldflags "-static"' main.go
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "Syntax Errors found."
+    else
+		echo "OK"
+    fi
+	echo "Press Enter"
+    read key
+
+c   make clean
+	make clean
+	echo "Press Enter"
+    read key
+	
+p	Push
+    make clean
+    git add .
+    git commit
+    git push
+	echo "Press Enter"
+    read key
+
 
 + ! t t
 @       Do something on the current file
@@ -46,16 +89,5 @@ m	make
         for i in %t ; do
             $CMD "$i"
         done
-
-B	build static
-	export CGO_ENABLED=0
-	go build -o gopache -a -installsuffix cgo -ldflags '-w -extldflags "-static"' main.go
-	sleep 15
-
-P	to github
-    rm gopache
-    git add .
-    git commit
-    git push
 
     

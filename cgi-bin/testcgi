@@ -1,0 +1,7 @@
+#!/bin/sh
+wget localhost:8080/stop
+
+echo "cgi bin program output"
+env
+
+

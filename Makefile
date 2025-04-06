@@ -17,6 +17,8 @@ run: build
 # Clean up the binary
 clean:
 	rm -f $(BINARY_NAME)
+	rm -f nohup.out
+	rm -f gopache.pid
 
 # Format the Go code (optional)
 fmt:
